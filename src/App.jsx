@@ -27,7 +27,6 @@ const App = () => {
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
-
   const customAuthHandler = async () => {
     const previousAuthState = oktaAuth.authStateManager.getPreviousAuthState();
     if (!previousAuthState || !previousAuthState.isAuthenticated) {
