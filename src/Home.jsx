@@ -7,7 +7,7 @@ import GoogleButton from 'react-google-button'
 const Home = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
-  const googleAuthorizeRoute = "https://dev-01936861.okta.com/oauth2/v1/authorize?idp="+config.idps.googleId+'&client_id='+config.oidc.clientId+'&response_type=code%20token%20id_token&response_mode=fragment&scope=openid%20email%20profile&redirect_uri='+config.oidc.redirectUri+'&state='+config.idps.state+'&nonce='+config.idps.nonce;
+  const googleAuthorizeRoute = "https://dev-01936861.okta.com/oauth2/v1/authorize?idp="+config.idps.googleId+'&client_id='+'0oa3sq0q2iDDS2IV25d7'+'&response_type=code%20token%20id_token&response_mode=fragment&scope=openid%20email%20profile&redirect_uri='+config.oidc.redirectUri+'&state='+config.idps.state+'&nonce='+config.idps.nonce;
   
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
@@ -68,6 +68,10 @@ const Home = () => {
           The Personicle is a person centric healthcare data platform that registers individual events of lifestyle, health, social, environmental, and other related events to provide highly personalized & preventive health insights in real time.
           </p>
           <Button id="login-button" primary onClick={login}>Login</Button>
+          <a href={googleAuthorizeRoute}>Sign in with google</a>
+          {/* <GoogleButton
+                  onClick={() => { window.prompt(googleAuthorizeRoute,'_self')}}
+              /> */}
           {/* <GoogleButton
                   onClick={() => { window.open(googleAuthorizeRoute,'_self')}}
               /> */}
