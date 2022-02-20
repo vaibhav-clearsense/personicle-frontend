@@ -2,13 +2,28 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState, useEffect } from 'react';
 import { Button, Header } from 'semantic-ui-react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal,Container,Col,Row} from 'react-bootstrap';
 import config from './config';
 import GoogleButton from 'react-google-button'
 const Home = () => {
+  const[showModal,setShowModal] = useState(false)
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
-  const googleAuthorizeRoute = "https://dev-01936861.okta.com/oauth2/v1/authorize?idp="+config.idps.googleId+'&client_id='+'0oa3sq0q2iDDS2IV25d7'+'&response_type=code%20token%20id_token&response_mode=fragment&scope=openid%20email%20profile&redirect_uri='+config.oidc.redirectUri+'&state='+config.idps.state+'&nonce='+config.idps.nonce;
-  
+  const openModal = () => setShowModal(true)
+  const closeModal = () => setShowModal(false)
+  const onGoogleSignIn = () => {
+    oktaAuth.signInWithRedirect({ 
+      clientId: config.oidc.clientId,
+      redirectUri: encodeURI(config.oidc.redirectUri),
+      responseType: 'code',
+      responseMode: 'query',
+      codeChallengeMethod: 'S256',
+      scopes: ['openid', 'email', 'profile'],
+      idp: "0oa3v658b8VCLoy3L5d7",
+      pkce:true
+    });
+  };
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
       setUserInfo(null);
@@ -67,14 +82,43 @@ const Home = () => {
           <p>
           The Personicle is a person centric healthcare data platform that registers individual events of lifestyle, health, social, environmental, and other related events to provide highly personalized & preventive health insights in real time.
           </p>
-          <Button id="login-button" primary onClick={login}>Login</Button>
-          <a href={googleAuthorizeRoute}>Sign in with google</a>
+          <Button variant="primary" onClick={openModal}>
+              Login to Explore
+          
+            </Button>
+          {/* <Button id="login-button" primary onClick={login}>Login</Button> */}
+          {/* <a href={googleAuthorizeRoute}>Sign in with google</a> */}
           {/* <GoogleButton
                   onClick={() => { window.prompt(googleAuthorizeRoute,'_self')}}
               /> */}
           {/* <GoogleButton
-                  onClick={() => { window.open(googleAuthorizeRoute,'_self')}}
+                  onClick={onGoogleSignIn}
               /> */}
+            <Modal centered show={showModal} onHide={closeModal} >
+              <Modal.Header closeButton>
+                <Modal.Title >Sign in</Modal.Title>
+              </Modal.Header>
+
+          <Container >
+
+          <Row >
+            <Col></Col>
+            <Col xs={7}>
+              <GoogleButton
+                  onClick={onGoogleSignIn}
+              />
+            </Col>
+            <Col></Col>
+          </Row>
+
+          <Row>
+              <Col></Col>
+              <Col xs={5}> <button style={{marginTop:'5px', width:'100%'}} onClick={login}>Sign in with Okta</button> </Col>
+              <Col></Col>
+          </Row>
+         
+          </Container>
+        </Modal>
         </div>
         )}
 

@@ -18,14 +18,7 @@ export default {
     messagesUrl: 'http://localhost:8000/api/messages',
   },
   idps: {
-
     googleId: GOOGLE_ID,
-
-    state:'thisissomestate',
-
-    nonce:'thisissomerandomstring',
-   
-    // redirect_uri: 'http%3A%2F%2Flocalhost%3A3000%2F'
 
 },
   app: {

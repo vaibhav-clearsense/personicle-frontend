@@ -14,6 +14,7 @@ const env = {};
 [
   'ISSUER',
   'CLIENT_ID',
+  'GOOGLE_ID',
   'OKTA_TESTING_DISABLEHTTPSCHECK',
   'USE_INTERACTION_CODE',
 ].forEach((key) => {
