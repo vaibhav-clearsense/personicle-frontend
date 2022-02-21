@@ -6,9 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal,Container,Row,Col } from 'react-bootstrap';
 import TimelineChart from "./TimeLineChart";
 import useGoogleCharts from './useGoogleCharts'
+import config from './config';
 const Connections = () => {
 
-  const ingestionServer = "https://20.121.8.101:8000"
+  const ingestionServer = config.resourceServer.ingestionServer
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const[authorized,setAuthorized] = useState(false);
@@ -21,7 +22,7 @@ const Connections = () => {
   useEffect(() => {
     if (authState && authState.isAuthenticated) {
       const accessToken = oktaAuth.getAccessToken();
-      fetch('https://20.121.8.101:8000/authenticate', {
+      fetch(config.resourceServer.authenticateEndpoint, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

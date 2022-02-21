@@ -15,7 +15,8 @@ export default {
     disableHttpsCheck: OKTA_TESTING_DISABLEHTTPSCHECK,
   },
   resourceServer: {
-    messagesUrl: 'http://localhost:8000/api/messages',
+    authenticateEndpoint: 'https://personicle-data-ingestion.azurewebsites.net/authenticate',
+    ingestionServer: 'https://personicle-data-ingestion.azurewebsites.net'
   },
   idps: {
     googleId: GOOGLE_ID,
