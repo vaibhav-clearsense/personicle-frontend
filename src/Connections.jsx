@@ -1,16 +1,22 @@
 
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useEffect, useState } from 'react';
-import { Header, Icon } from 'semantic-ui-react';
-
-
+import { Header, Icon , Button} from 'semantic-ui-react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal } from 'react-bootstrap';
+import TimelineChart from "./TimeLineChart";
+import useGoogleCharts from './useGoogleCharts'
 const Connections = () => {
 
   const ingestionServer = "https://20.121.8.101:8000"
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const[authorized,setAuthorized] = useState(false);
+  const[showChart,setShowChart] = useState(false)
 
+  const handleShow = () => setShowChart(true)
+  const handleClose = () => setShowChart(false)
+  const google = useGoogleCharts();
   // authenticate resource server with access token
   useEffect(() => {
     if (authState && authState.isAuthenticated) {
@@ -94,13 +100,25 @@ async function authorizationWindow(e, redirectUrl){
         My Connections
       </Header>
       <div>
+      <tr >
         {userConnections.map((connection)=>(
-          <tr >
-          <td><button onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></td>
-          </tr>
+         
+          <td><button style={{marginLeft: "120px", marginTop:'40px'}} onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></td>
+        
         ))}
+          </tr>
+        <Button style={{marginTop:'20px'}}onClick={handleShow}>View Your Activities</Button>
+       
       </div>
-     
+      <div>
+        
+      </div>
+      <Modal centered show={showChart} size="lg" onHide={handleClose} >
+          <Modal.Header closeButton>
+              <Modal.Title >Your Activities</Modal.Title>
+          </Modal.Header>
+           <Modal.Body> <TimelineChart google={google}/> </Modal.Body>
+      </Modal>
     </div>
   );
 };
