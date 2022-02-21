@@ -3,7 +3,7 @@ import { useOktaAuth } from '@okta/okta-react';
 import React, { useEffect, useState } from 'react';
 import { Header, Icon , Button} from 'semantic-ui-react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Modal } from 'react-bootstrap';
+import { Modal,Container,Row,Col } from 'react-bootstrap';
 import TimelineChart from "./TimeLineChart";
 import useGoogleCharts from './useGoogleCharts'
 const Connections = () => {
@@ -99,26 +99,29 @@ async function authorizationWindow(e, redirectUrl){
       <Header as="h1">  
         My Connections
       </Header>
-      <div>
-      <tr >
-        {userConnections.map((connection)=>(
-         
-          <td><button style={{marginLeft: "120px", marginTop:'40px'}} onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></td>
-        
-        ))}
-          </tr>
-        <Button style={{marginTop:'20px'}}onClick={handleShow}>View Your Activities</Button>
-       
-      </div>
-      <div>
-        
-      </div>
-      <Modal centered show={showChart} size="lg" onHide={handleClose} >
-          <Modal.Header closeButton>
-              <Modal.Title >Your Activities</Modal.Title>
-          </Modal.Header>
-           <Modal.Body> <TimelineChart google={google}/> </Modal.Body>
-      </Modal>
+      
+        <div class="row mt-4">
+              <div class="col-sm">
+                  {userConnections.map((connection)=>(
+                  
+                   <tr><button style={{ marginTop:'20px'}} onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></tr>
+                
+                   ))}
+              </div>
+              <div class="col-sm">
+                    <Button style={{marginTop:'9px'}} onClick={handleShow}>View Your Activites</Button>
+              </div>
+              <div class="col-sm">
+                   <Button style={{marginTop:'9px'}}>Events Summary</Button>
+              </div>
+        </div>
+      
+        <Modal centered show={showChart} size="lg" onHide={handleClose} >
+            <Modal.Header closeButton>
+                <Modal.Title >Your Activities</Modal.Title>
+            </Modal.Header>
+            <Modal.Body> <TimelineChart google={google}/> </Modal.Body>
+        </Modal>
     </div>
   );
 };
