@@ -6,12 +6,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal,Container,Col,Row} from 'react-bootstrap';
 import config from './config';
 import GoogleButton from 'react-google-button'
+import HomepageLayout from './HomepageLayout';
+
 const Home = () => {
   const[showModal,setShowModal] = useState(false)
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const openModal = () => setShowModal(true)
   const closeModal = () => setShowModal(false)
+
   const onGoogleSignIn = () => {
     oktaAuth.signInWithRedirect({ 
       clientId: config.oidc.clientId,
@@ -47,7 +50,9 @@ const Home = () => {
   }
 
   return (
+    
     <div id="home">
+    
       <div>
         <Header as="h1">The Personicle</Header>
 

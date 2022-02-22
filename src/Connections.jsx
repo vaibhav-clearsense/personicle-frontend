@@ -22,7 +22,7 @@ const Connections = () => {
   useEffect(() => {
     if (authState && authState.isAuthenticated) {
       const accessToken = oktaAuth.getAccessToken();
-      fetch(config.resourceServer.authenticateEndpoint, {
+      fetch(config.resourceServer.stagingServer, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -96,7 +96,7 @@ async function authorizationWindow(e, redirectUrl){
 }
 
   return (
-    <div>
+    <>
       <Header as="h1">  
         My Connections
       </Header>
@@ -121,9 +121,9 @@ async function authorizationWindow(e, redirectUrl){
             <Modal.Header closeButton>
                 <Modal.Title >Your Activities</Modal.Title>
             </Modal.Header>
-            <Modal.Body> <TimelineChart google={google}/> </Modal.Body>
+            <Modal.Body> <TimelineChart style={{position:'relative'}}google={google}/> </Modal.Body>
         </Modal>
-    </div>
+    </>
   );
 };
 

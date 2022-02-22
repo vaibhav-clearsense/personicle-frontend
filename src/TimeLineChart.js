@@ -40,8 +40,8 @@ function TimeLinechart ({google}) {
   
       // Set chart options
       var options = {'title':'Gantt Chart Timeline Visualization',
-                    'width':760,
-                    'height':260,
+                    'width':'100%',
+                    'height':'50%',
                     timeline: { groupByRowLabel: true}, 
                     displayAnnotations: true};
 
