@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal,Container,Col,Row} from 'react-bootstrap';
 import config from './config';
 import GoogleButton from 'react-google-button'
-import HomepageLayout from './HomepageLayout';
+
 
 const Home = () => {
   const[showModal,setShowModal] = useState(false)
