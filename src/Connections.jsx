@@ -9,7 +9,7 @@ import useGoogleCharts from './useGoogleCharts'
 import config from './config';
 const Connections = () => {
 
-  const ingestionServer = config.resourceServer.ingestionServer
+  const ingestionServer = config.resourceServer.stagingServer
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const[authorized,setAuthorized] = useState(false);
