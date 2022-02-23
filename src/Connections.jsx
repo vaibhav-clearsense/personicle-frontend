@@ -22,7 +22,7 @@ const Connections = () => {
   useEffect(() => {
     if (authState && authState.isAuthenticated) {
       const accessToken = oktaAuth.getAccessToken();
-      fetch(config.resourceServer.stagingServer, {
+      fetch(config.resourceServer.stagingServerAuthenticate, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

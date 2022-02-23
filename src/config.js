@@ -17,7 +17,8 @@ export default {
   resourceServer: {
     authenticateEndpoint: 'https://personicle-data-ingestion.azurewebsites.net/authenticate',
     ingestionServer: 'https://personicle-data-ingestion.azurewebsites.net',
-    stagingServer: 'https://personicle-ingestion-staging.azurewebsites.net/authenticate'
+    stagingServerAuthenticate: 'https://personicle-ingestion-staging.azurewebsites.net/authenticate',
+    stagingServer:'https://personicle-ingestion-staging.azurewebsites.net'
   },
   idps: {
     googleId: GOOGLE_ID,
