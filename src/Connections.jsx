@@ -101,18 +101,18 @@ async function authorizationWindow(e, redirectUrl){
         My Connections
       </Header>
       
-        <div class="row mt-4">
-              <div class="col-sm">
+        <div className="row mt-4">
+              <div className="col-sm">
                   {userConnections.map((connection)=>(
                   
                    <tr><button style={{ marginTop:'20px'}} onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></tr>
                 
                    ))}
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                     <Button style={{marginTop:'9px'}} onClick={handleShow}>View Your Activites</Button>
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                    <Button style={{marginTop:'9px'}}>Events Summary</Button>
               </div>
         </div>
