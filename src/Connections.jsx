@@ -6,9 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal,Container,Row,Col } from 'react-bootstrap';
 import TimelineChart from "./TimeLineChart";
 import useGoogleCharts from './useGoogleCharts'
+import config from './config';
 const Connections = () => {
 
-  const ingestionServer = "https://20.121.8.101:8000"
+  const ingestionServer = config.resourceServer.stagingServer
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const[authorized,setAuthorized] = useState(false);
@@ -21,7 +22,7 @@ const Connections = () => {
   useEffect(() => {
     if (authState && authState.isAuthenticated) {
       const accessToken = oktaAuth.getAccessToken();
-      fetch('https://20.121.8.101:8000/authenticate', {
+      fetch(config.resourceServer.stagingServerAuthenticate, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -95,23 +96,23 @@ async function authorizationWindow(e, redirectUrl){
 }
 
   return (
-    <div>
+    <>
       <Header as="h1">  
         My Connections
       </Header>
       
-        <div class="row mt-4">
-              <div class="col-sm">
+        <div className="row mt-4">
+              <div className="col-sm">
                   {userConnections.map((connection)=>(
                   
                    <tr><button style={{ marginTop:'20px'}} onClick={(e) => authorizationWindow(e,connection.redirect+"?user_id="+userInfo.sub)}>{connection.source}</button></tr>
                 
                    ))}
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                     <Button style={{marginTop:'9px'}} onClick={handleShow}>View Your Activites</Button>
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                    <Button style={{marginTop:'9px'}}>Events Summary</Button>
               </div>
         </div>
@@ -120,9 +121,9 @@ async function authorizationWindow(e, redirectUrl){
             <Modal.Header closeButton>
                 <Modal.Title >Your Activities</Modal.Title>
             </Modal.Header>
-            <Modal.Body> <TimelineChart google={google}/> </Modal.Body>
+            <Modal.Body> <TimelineChart style={{position:'relative'}}google={google}/> </Modal.Body>
         </Modal>
-    </div>
+    </>
   );
 };
 

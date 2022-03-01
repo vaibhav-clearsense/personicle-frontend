@@ -1,66 +1,111 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import sample_events from "../sample_data/sample_events"
+import { ConsoleWriter } from "istanbul-lib-report";
 
-function TimeLinechart ({google}) {
+function TimelineChart ({google}) {
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
     if (google && !chart) {
-      // Create functions 
+
       function endDateInMilliseconds(startDate, duration) {
-        var startDate = new Date(startDate); // some mock date
-        console.log(startDate);
-        var startDateInMS = startDate.getTime(); 
+        var formattedDate = dateToStandardFormat(startDate)
+        var startDateInMS = formattedDate.getTime(); 
         var endDateInMS = startDateInMS + duration
         return endDateInMS;
      }
 
+     // convert date to standard format to be compatible with different browsers
+     function dateToStandardFormat(date){
+        var values = date.split(/[^0-9]/),
+        year = parseInt(values[0]),
+        month = parseInt(values[1]) - 1,
+        day = parseInt(values[2]),
+        hours = parseInt(values[3]),
+        minutes = parseInt(values[4]),
+        seconds = parseInt(values[5])
+
+        var formattedDate = new Date(year, month, day, hours, minutes, seconds);
+        return formattedDate
+     }
      
      let events = sample_events["sample_events"];
-     var endDate = endDateInMilliseconds(events[0].startTime, events[0].duration);
 
      function GFG_Fun(endDateInMS) {
             var endDate = new Date(endDateInMS);
             return endDate;
-        }
+      }
 
-    GFG_Fun(endDate);
-
-      // Create the data table
+      // Create the data table.
+      
       const data = new google.visualization.DataTable();
       data.addColumn({ type: 'string', id: 'Events' });
       data.addColumn({ type: 'string', id: 'Task ID' });
       data.addColumn({ type: 'date', id: 'Start Date' });
       data.addColumn({ type: 'date', id: 'End Date' });
-          events.forEach(event => 
-          {
-            data.addRow([event.activityName, event.logId.toString(), new Date(event.startTime), GFG_Fun(endDateInMilliseconds(event.startTime, event.duration))]);
-          });
+        events.forEach(event => 
+        {
+          var s = new Date(event.startTime)
+          data.addRow([event.activityName, event.logId.toString(), dateToStandardFormat(event.startTime), GFG_Fun(endDateInMilliseconds(event.startTime, event.duration))]);
+        });
   
       // Set chart options
       var options = {'title':'Gantt Chart Timeline Visualization',
-                    'width':760,
-                    'height':260,
+                    'width':500,
+                    'height':300,
                     timeline: { groupByRowLabel: true}, 
                     displayAnnotations: true};
 
-      // Instantiate and draw our chart, passing in some options.
-      const newChart = new google.visualization.Timeline(document.getElementById('timeline'));
-      newChart.draw(data, options);
+      // Create a dashboard.
+      var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div'));
 
-      setChart(newChart);
+      // Create a range slider, passing some options
+      var dateRangeSlider = new google.visualization.ControlWrapper({
+        'controlType': 'DateRangeFilter',
+        'containerId': 'filter_div',
+        'options': {
+          'filterColumnIndex': 2
+        }
+      });
+
+      // Create a timeline chart, passing some options
+      var timelineChart = new google.visualization.ChartWrapper({
+        'chartType': 'Timeline',
+        'containerId': 'timeline',
+        'options': {
+          'width': '100%',
+          'height': 215,
+          'pieSliceText': 'value',
+          'legend': 'right'
+        }
+      });
+
+      // Instantiate and draw our chart, passing in some options.
+      //var container = document.getElementById('timeline');
+      //var chart = new google.visualization.Timeline(container);
+      var dashboard = new google.visualization.Dashboard(
+                     document.getElementById('dashboard_div'));
+     
+      const chart = new google.visualization.Timeline(document.getElementById('timeline'));
+      dashboard.bind(dateRangeSlider, timelineChart);
+      dashboard.draw(data, options);
+      setChart(timeline);
+      
     }
   }, [google, chart]);
 
   return (
     <>
-    <div>
-    </div>
       {!google && <Spinner />}
-      <div id="timeline" className={!google ? 'd-none' : ''} />
+        <div id="dashboard_div">
+          <div id="filter_div"></div>
+          <div id="timeline" className={!google ? '.d-none' : ''} />
+        </div>
+      
     </>
   )
 }
 
-export default TimeLinechart;
+export default TimelineChart;
